@@ -17,11 +17,16 @@ export default function Main() {
   const isMountedInitialRender = useRef(false);
 
   const setData = async () => {
-    setLoading(true);
-    const data = await fetch(`http://www.omdbapi.com/?apikey=${OMDB_API_KEY}&s=${filterState.s}&type=${filterState.type}`)
-    const movies = await data.json();
-    setMovies(movies?.['Search'] ?? []);
-    setLoading(false);
+    try {
+      setLoading(true);
+      const data = await fetch(`https://www.omdbapi.com/?apikey=${OMDB_API_KEY}&s=${filterState.s}&type=${filterState.type}`)
+      const movies = await data.json();
+      setMovies(movies?.['Search'] ?? []);
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setLoading(false);
+    }
   }
 
   const setQuerySearch = (querySearch) => {
